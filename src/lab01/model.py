@@ -6,7 +6,7 @@ class Product:
         self.price = val_price(price)
         self.quantity = val_quantity(quantity)
         self.producer = val_producer(producer)
-        self.__cost_price = val_cost_price(cost_price)  # приватный
+        self.__cost_price__ = val_cost_price(cost_price)  # приватный
         self._id = val_id(id)  # защищенный
         self.description = val_description(description)
         self.comments = val_comments(comments)
@@ -16,7 +16,7 @@ class Product:
             #========МАГИЧЕСКИЕ МЕТОДЫ========#
 
     def __str__(self):  # Краткая сводка 
-        if self.status == 1:
+        if self._status == 1:
             return 'На данный момент информация о товаре не доступна'
         else:
 
@@ -26,16 +26,20 @@ class Product:
                 return f"{self.name} за {self.price} рублей. Товара нет в наличии :("
     
     def __repr__(self):  # Для отладки
-        return f"product({self.name}, {self.price}, {self.quantity}, {self.producer}, {self.__cost_prise}, {self._id}, {self.description}, {self.comments})"
+        return f"product({self.name}, {self.price}, {self.quantity}, {self.producer}, {self.__cost_price__}, {self._id}, {self.description}, {self.comments})"
     
     def __eq__(self, another): # Сравниваение с другим экземляром
+        if not isinstance(another, Product):
+            return False
+    
+    # Сравниваем по названию
         return self.name == another.name
     
             #========PROPERTY МЕТОДЫ========#
 
     @property
     def info(self):
-        if self.status == 1:
+        if self._status == 1:
             return 'На данный момент информация о товаре не доступна'
         else:
             return f'Вот что мне удалось найти по запросу {self.name}:\n{self.name}, {self.price}, {self.quantity},\n{self.producer}, {self.description}, {self.comments}'
@@ -54,7 +58,7 @@ class Product:
     
     @property
     def _deficit(self):
-        self.status = 1
+        self._status = 1
         return f'... И к последним новостям экономики, в виду всеми звестных событий начался дефицит продукта"{self.name}"'
     
     
@@ -73,7 +77,7 @@ class Product:
         return 'Комментарий успешно добавлен!'
     
     def order(self, wallet):
-        if self.status == 1:
+        if self._status == 1:
             x = 1.2
         else:
             x = 1
