@@ -1,6 +1,6 @@
 # Лабораторная работа №1
 
-## Реализация класса Product в [model.py](/Users/galaevka/oop/OOP_ium/src/lab01/model.py):
+## Реализация класса Product в [model.py](model.py):
 ```python
 from validate import *
 class Product:
