@@ -393,7 +393,3 @@ if product_created:
     print(mouse.info)
     print("\nKEYBOARD:")
     print(keyboard.info)
-
-print("\n" + "=" * 70)
-print(" ТЕСТИРОВАНИЕ ЗАВЕРШЕНО")
-print("=" * 70)

@@ -1,6 +1,6 @@
 # Лабораторная работа №1
 
-## Реализация класса Product в model.py:
+## Реализация класса Product в [model.py](/Users/galaevka/oop/OOP_ium/src/lab01/model.py):
 ```python
 from validate import *
 class Product:
@@ -94,7 +94,7 @@ class Product:
             return f'Отказ! Товара вида "{self.name}" нет в наличии'
 ```
 
-## Как видим init реализован с помощью ряда функций, которые описаны в validate.py:
+## Как видим init реализован с помощью ряда функций, которые описаны в [validate.py](/Users/galaevka/oop/OOP_ium/src/lab01/validate.py):
 ```python
 def val_name(name):
         if not isinstance(name, str):
@@ -152,7 +152,7 @@ def val_comments(comments):
     return comments #Проблема со ссылками? .copy()
 ```
 
-## Файл demo.py содержит проверку функционала нашего класса
+## Файл [demo.py](/Users/galaevka/oop/OOP_ium/src/lab01/demo.py) содержит проверку функционала нашего класса
 ```python
 from model import Product
 
@@ -549,8 +549,4 @@ if product_created:
     print(mouse.info)
     print("\nKEYBOARD:")
     print(keyboard.info)
-
-print("\n" + "=" * 70)
-print(" ТЕСТИРОВАНИЕ ЗАВЕРШЕНО")
-print("=" * 70)
 ```
