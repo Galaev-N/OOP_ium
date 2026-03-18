@@ -21,12 +21,12 @@ class Product:
         else:
 
             if self.quantity != 0:
-                return f"{self.name} за {self.price} рублей. Есть в наличии"
+                return f"{self.name} за {self.price} рублей. Оценка - {self.mark} \nОписание:\n{self.description}\n Комментарии:\n {self.comments}\n Есть в наличии\n"
             else:
                 return f"{self.name} за {self.price} рублей. Товара нет в наличии :("
     
     def __repr__(self):  # Для отладки
-        return f"product({self.name}, {self.price}, {self.quantity}, {self.producer}, {self.__cost_price__}, {self._id}, {self.description}, {self.comments})"
+        return f"product({self.name}, {self.price}, {self.quantity}, {self.producer}, {self.__cost_price__}, {self._id}, {self.description}, {self.comments}, {self.mark}, {self._status})"
     
     def __eq__(self, another): # Сравниваение с другим экземляром
         if not isinstance(another, Product):
@@ -88,4 +88,3 @@ class Product:
             return f'Отказ! Причина: недостаточно {self.price*x - wallet} на балансе'
         elif self.quantity == 0:
             return f'Отказ! Товара вида "{self.name}" нет в наличии'
-    
