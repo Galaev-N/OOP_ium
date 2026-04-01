@@ -50,7 +50,7 @@ class Product:
     
     @property
     def cost_price(self):
-        return self.__cost_price
+        return self.__cost_price__
     
     @property
     def id(self):
@@ -76,7 +76,7 @@ class Product:
         self.comments[f'UnknowUser{len(self.comments)}'] = txt
         return 'Комментарий успешно добавлен!'
     
-    def order(self, wallet):
+    '''def order(self, wallet):
         if self._status == 1:
             x = 1.2
         else:
@@ -87,4 +87,4 @@ class Product:
         elif wallet < self.price*x:
             return f'Отказ! Причина: недостаточно {self.price*x - wallet} на балансе'
         elif self.quantity == 0:
-            return f'Отказ! Товара вида "{self.name}" нет в наличии'
+            return f'Отказ! Товара вида "{self.name}" нет в наличии''''
