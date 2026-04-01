@@ -141,6 +141,8 @@ if product_created:
     for user, comment in mouse.comments.items():
         print(f"  {user}: {comment}")
 
+
+
 # ============= ТЕСТ 8: ДОСТУП К РАЗНЫМ ТИПАМ АТРИБУТОВ =============
 if product_created:
     print("\nДОСТУП К АТРИБУТАМ")
