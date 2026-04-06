@@ -87,4 +87,4 @@ class Product:
         elif wallet < self.price*x:
             return f'Отказ! Причина: недостаточно {self.price*x - wallet} на балансе'
         elif self.quantity == 0:
-            return f'Отказ! Товара вида "{self.name}" нет в наличии''''
+            return f'Отказ! Товара вида "{self.name}" нет в наличии'''
