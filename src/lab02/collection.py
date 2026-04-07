@@ -19,6 +19,9 @@ class ProductCatalog:
             else: raise ValueError('Неверное содержание списка!')
         else: raise TypeError('Ошибка! неверный формат каталога!')
         
+    @property
+    def items(self):
+        return self._items
 
     def A(self, obj): # Add
         if type(obj) == Product: self._items.append(obj)
@@ -30,8 +33,8 @@ class ProductCatalog:
         else: raise ValueError(f'Такого продукта нет в каталоге')
         return f'Продукт {obj.name} был успешно Удален!'
 
-    def GA(self): #Get All
-        return self._items
+    def GAll(self): #Get All
+        return f'Вот содержимое коллекции:\n{self._items}'
     
     def FBI(self, id): # Find By Id
         for obj in self._items:
@@ -45,26 +48,21 @@ class ProductCatalog:
         # Возвращаем итератор от нашего списка
         return iter(self._items)
     
-    def __getitem__(self, index):
+    def __getitem__(self, index): # Позволяет обращаться к элементам множества по индексу
         return self._items[index]
     
     def RAI(self, index): # Remove At Index
-        """Удаляет элемент по индексу"""
         if index < 0 or index >= len(self._items):
             raise IndexError(f'Индекс {index} вне диапазона (0-{len(self._items)-1})')
         return self._items.pop(index)
-
-a = ProductCatalog()
-laptop = Product(
-        name="Ноутбук ASUS",
-        price=75000,
-        quantity=5,
-        producer="ASUS",
-        cost_price=60000.50,
-        id="#A12345",
-        description="Мощный игровой ноутбук с RTX 3060",
-        comments={"User1": "Отличный выбор!", "User2": "Беру уже второй"},
-        mark=4.5
-    )
-print(a.A(laptop))
-print(a.RAI(0))
+    
+    def SBP(self):
+         self._items = sorted(self._items, key=lambda x: x.price)
+         return self._items
+    
+    def GAva(self): # Get Avalible
+        Avalible_Cat = ProductCatalog()
+        for i in self._items:
+            if i.quantity != 0:
+                Avalible_Cat.A(i)
+        return Avalible_Cat.GAll()

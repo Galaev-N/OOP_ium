@@ -395,3 +395,6 @@ if product_created:
     print(mouse.info)
     print("\nKEYBOARD:")
     print(keyboard.info)
+
+A = [keyboard, laptop, mouse]
+print(A[0].price)
