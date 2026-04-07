@@ -5,7 +5,6 @@ from model import Product
 
 class ProductCatalog:
 
-    #Проверка на флуд
     def __init__(self, items=None):
         if items is None:
             self._items = []
