@@ -56,13 +56,16 @@ class ProductCatalog:
             raise IndexError(f'Индекс {index} вне диапазона (0-{len(self._items)-1})')
         return self._items.pop(index)
     
-    def SBP(self):
+    def SBP(self): # Sort By Price
          self._items = sorted(self._items, key=lambda x: x.price)
          return self._items
     
     def GAva(self): # Get Avalible
-        Avalible_Cat = ProductCatalog()
-        for i in self._items:
-            if i.quantity != 0:
-                Avalible_Cat.A(i)
-        return Avalible_Cat.GAll()
+        Available_cat = ProductCatalog()  # Создаем новую пустую коллекцию
+    
+        for item in self._items:
+            # Проверяем, что элемент - Product и есть в наличии
+            if isinstance(item, Product) and hasattr(item, 'quantity') and item.quantity != 0:
+                Available_cat.A(item)  # Добавляем в новую коллекцию
+    
+        return Available_cat
