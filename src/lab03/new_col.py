@@ -1,7 +1,4 @@
-import sys
-
-sys.path.append(r'/Users/galaevka/oop/OOP_ium/src/lab01/')
-from model import Product
+from new_models import *
 
 class ProductCatalog:
 
@@ -11,7 +8,7 @@ class ProductCatalog:
         elif isinstance(items, list):
             flag = 1
             for i in items:
-                if type(i) != Product:
+                if type(i) not in [Product, Estate, Techic, Food]:
                     flag = 0
             if flag:
                 self._items = items
@@ -23,7 +20,7 @@ class ProductCatalog:
         return self._items
 
     def A(self, obj): # Add
-        if type(obj) == Product: self._items.append(obj)
+        if type(obj) in [Product, Estate, Techic, Food]: self._items.append(obj)
         else: raise TypeError(f'Ошибка! {obj} не принадлежит классу Product')
         return f'Продукт {obj.name} был успешно добавлен!'
 
@@ -64,15 +61,14 @@ class ProductCatalog:
     
         for item in self._items:
             # Проверяем, что элемент - Product и есть в наличии
-            if isinstance(item, Product) and hasattr(item, 'quantity') and item.quantity != 0:
+            if type(item) in [Product, Estate, Techic, Food] and (hasattr(item, 'quantity') or hasattr(item, 'free')) and (item.quantity != 0 or item.free == 1):
                 Available_cat.A(item)  # Добавляем в новую коллекцию
-    
         return Available_cat
-
+    
     def GD(self): # Get Digital
         Digital_cat = ProductCatalog()
         for item in self._items:
             # Проверяем, что элемент - Product и есть в наличии
-            if type(item).__name__ == Technic:
+            if type(item).__name__ == Techic:
                 Digital_cat.A(item)  # Добавляем в новую коллекцию
-Meow = ProductCatalog()
+

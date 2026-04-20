@@ -1,5 +1,6 @@
 from validate import *
-class Product:
+from abc import ABC, abstractmethod
+class Product(ABC):
     def __init__(self, name, price, quantity, producer, cost_price, id, description, comments, mark=3.0, status=0):
 
         self.name = val_name(name)
@@ -75,10 +76,10 @@ class Product:
     def feadback(self, txt):
         self.comments[f'UnknowUser{len(self.comments)}'] = txt
         return 'Комментарий успешно добавлен!'
-    
-    '''def order(self, wallet):
+
+    def order(self, wallet):
         if self._status == 1:
-            x = 1.2
+            x = 1.22
         else:
             x = 1
         if wallet >= self.price*x and self.quantity > 0:
