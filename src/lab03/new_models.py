@@ -1,7 +1,7 @@
 import sys
 from validate import *
 from datetime import *
-from random import *
+import random
 sys.path.append(r'/Users/galaevka/oop/OOP_ium/src/lab01/')
 
 from model import Product
@@ -28,7 +28,7 @@ class Food(Product):
             return 'На данный момент информация о продукте не доступна'
         else:
             if self.quantity != 0:
-                return f"{self.name} за {self.price} рублей, сроком годности до {self.expiration_date}.\nКалории: {self.calories}\nОценка продукта- {self.mark} \nОписание:\n{self.description}\n Комментарии:\n {self.comments}\n Есть в наличии\n"
+                return f"{self.name} за {self.price} рублей, срок годности: {self.expiration_per} дней.\nКалории: {self.calories}\nОценка продукта - {self.mark} \nОписание:\n{self.description}\nКомментарии:\n{self.comments}\nЕсть в наличии\n"
             else:
                 return f"{self.name} за {self.price} рублей. Продукта нет в наличии :("
     
