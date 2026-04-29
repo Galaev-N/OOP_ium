@@ -6,9 +6,9 @@ from validate import *
 class Product(ABC):
     def __init__(self, name, price, quantity, producer, cost_price, id, description, comments, mark=3.0, status=0):
 
-        self.name = val_name(name)
-        self.price = val_price(price)
-        self.quantity = val_quantity(quantity)
+        self._name = val_name(name)
+        self._price = val_price(price)
+        self._quantity = val_quantity(quantity)
         self.producer = val_producer(producer)
         self.__cost_price__ = val_cost_price(cost_price)
         self._id = val_id(id)

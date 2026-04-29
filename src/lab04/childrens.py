@@ -1,5 +1,5 @@
 
-from interfaces import Product, Catalog
+from N_inter import Product, Catalog
 import random
 from validate import *
 
@@ -59,7 +59,7 @@ class Techic(Product):
     def __init__(self, name, price, quantity, producer, cost_price, id, description, comments, warranty_months, power_consumption, mark, status):
         super().__init__(name, price, quantity, producer, cost_price, id, 
                         description, comments, mark, status)
-        self.warranty_months = val_months(warranty_months)
+        self._warranty_months = val_months(warranty_months)
         self.power_consumption = val_power(power_consumption)
     
     # Реализация абстрактных методов Product (другая логика!)
@@ -107,7 +107,7 @@ class Techic(Product):
 
 # ============ РЕАЛИЗАЦИЯ Product в классе Estate ============
 class Estate(Product):
-    def __init__(self, name, price, producer, id, description, comments, location, area, mark, free=1):
+    def __init__(self, name, price, producer, id, description, comments, location, area, mark, free=1, status=0):
         super().__init__(
             name=name,           # название
             price=price,         # цена
@@ -117,11 +117,12 @@ class Estate(Product):
             id=id,               # идентификатор
             description=description,  # описание
             comments=comments,   # комментарии
-            mark=mark            # оценка
+            mark=mark,            # оценка
+            status=status
         )
-        self.location = val_loc(location)
-        self.proportions = val_prop(area)
-        self.free = free
+        self._location = val_loc(location)
+        self._proportions = val_prop(area)
+        self._free = free
     
     def get_price(self):
         if self._status == 1:
@@ -148,7 +149,7 @@ class Estate(Product):
         if self._status == 1:
             return 'Информация об объекте временно недоступна'
         status = "СВОБОДНО" if self._free == 1 else "ЗАНЯТО"
-        return f'{self._name} | {self.get_price()} руб. | {status} | {self._area} кв.м. | {self._location}'
+        return f'{self._name} | {self.get_price()} руб. | {status} | {self._proportions} кв.м. | {self._location}'
     
     def compare_to(self, other):
         """Сравнение по цене"""
