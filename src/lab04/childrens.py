@@ -44,6 +44,14 @@ class Food(Product):
             return 'ПРОСРОЧЕНО!'
         else:
             return f'Свежий продукт. Годен {self._expiration_days} дней'
+    
+    def compare_to(self, other):
+        """Сравнение по цене"""
+        if self.get_price() < other.get_price():
+            return -1
+        elif self.get_price() > other.get_price():
+            return 1
+        return 0
 
 
 # ============ РЕАЛИЗАЦИЯ Product в классе Techic ============
@@ -89,6 +97,13 @@ class Techic(Product):
         results = ["Вы нашли дешевле!", "Цена адекватная", "РКН блокирует площадку..."]
         return random.choice(results)
 
+    def compare_to(self, other):
+        """Сравнение по цене"""
+        if self.get_price() < other.get_price():
+            return -1
+        elif self.get_price() > other.get_price():
+            return 1
+        return 0
 
 # ============ РЕАЛИЗАЦИЯ Product в классе Estate ============
 class Estate(Product):
@@ -134,6 +149,14 @@ class Estate(Product):
             return 'Информация об объекте временно недоступна'
         status = "СВОБОДНО" if self._free == 1 else "ЗАНЯТО"
         return f'{self._name} | {self.get_price()} руб. | {status} | {self._area} кв.м. | {self._location}'
+    
+    def compare_to(self, other):
+        """Сравнение по цене"""
+        if self.get_price() < other.get_price():
+            return -1
+        elif self.get_price() > other.get_price():
+            return 1
+        return 0
 
 
 # ============ РЕАЛИЗАЦИЯ Catalog ============
@@ -183,7 +206,11 @@ class ProductCatalog(Catalog):
         """Позволяет обращаться по индексу: catalog[0]"""
         return self._items[index]
     
-def print_all_products(products):
-    for product in products:
-        if isinstance(product, Product):  # проверка через интерфейс
-            print(product)
+    def compare_to(self, other):
+        """Сравнение по цене"""
+        if self.get_price() < other.get_price():
+            return -1
+        elif self.get_price() > other.get_price():
+            return 1
+        return 0
+

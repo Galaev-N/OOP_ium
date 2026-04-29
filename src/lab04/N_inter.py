@@ -89,3 +89,20 @@ class Catalog(ABC):
     def __iter__(self):
         """Вернуть итератор по товарам"""
         pass
+
+class Comparable(ABC):
+    """Интерфейс для сравнения объектов"""
+    
+    @abstractmethod
+    def compare_to(self, other):
+        """
+        Сравнивает текущий объект с другим.
+        Возвращает:
+        - отрицательное число, если self < other
+        - 0, если self == other
+        - положительное число, если self > other
+        """
+        pass
+
+
+# ============ ИНТЕРФЕЙС 4: Printable ============
