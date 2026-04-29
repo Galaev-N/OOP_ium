@@ -182,3 +182,8 @@ class ProductCatalog(Catalog):
     def __getitem__(self, index):
         """Позволяет обращаться по индексу: catalog[0]"""
         return self._items[index]
+    
+def print_all_products(products):
+    for product in products:
+        if isinstance(product, Product):  # проверка через интерфейс
+            print(product)
