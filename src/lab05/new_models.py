@@ -1,8 +1,7 @@
-import sys
+
 from validate import *
 from datetime import *
 import random
-sys.path.append(r'/Users/galaevka/oop/OOP_ium/src/lab01/')
 
 from model import Product
 
@@ -38,7 +37,7 @@ class Food(Product):
             
             expiration_date = purchase_date + timedelta(self.expiration_per)
             
-            return f'Купленный {our_day} продукт может быть употреблен до {expiration_date}'
+            return f'Купленный {our_day} продукт может быть употреблен до {self.expiration_per}'
         except:
             return f'Неверный формат даты'
             
@@ -46,10 +45,10 @@ class Food(Product):
         if self._status == 1:
             return 'Просим прощения. Информация о продукте отсутствует'
         else:
-            return f'Продукт питания "{self.name}":\n{self.calories}, {self.expiration_date} {self.price}, {self.quantity},\n{self.producer}, {self.description}, {self.comments}'
+            return f'Продукт питания "{self.name}":\n{self.calories}, {self.expiration_per} дней, {self.price} руб., {self.quantity},\nПроизводитель:{self.producer}, {self.description}, {self.comments}'
 
 
-class Techic(Product):
+class Technic(Product):
     def __init__(self, name, price, quantity, producer, cost_price, id,
                   description, comments, warranty_months, power_consumption, mark=3.0, status=0):
         super().__init__(
@@ -134,4 +133,4 @@ class Estate(Product):
 
 
 A = Food('a', 100, 1000, 'aaa', 10.0, '#M67890', 'sssss', {}, 29)
-print(type(A).__name__)
+print(A.info())
