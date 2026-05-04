@@ -51,7 +51,7 @@ class CS: # Change Status
             product.status = not(product.status)
             return product
 
-class СС: # Clear Comments
+class CC: # Clear Comments
         def __call__(self, product):
             product.comments = {}
             return product

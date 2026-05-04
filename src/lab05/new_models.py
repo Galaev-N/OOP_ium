@@ -126,7 +126,7 @@ class Estate(Product):
         
     def how_long(self, yo_loc):
         try:
-            res = ((yo_loc[0] - self.location[0])**2 + (yo_loc[1] - self.location[1])**2)**0,5
+            res = ((yo_loc[0] - self.location[0])**2 + (yo_loc[1] - self.location[1])**2)**0.5
             return f'Расстояние до места - {res} км.'
         except:
             return 'Неверный формат Местоположения'

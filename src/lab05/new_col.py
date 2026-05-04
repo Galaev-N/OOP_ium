@@ -76,11 +76,11 @@ class ProductCatalog:
     
     def sort_by(self, s_s, reverse=False):
         self._items.sort(key=s_s, reverse=reverse)
-        return self._items
+        return self
     
     def filter_by(self, f_s):
         self._items = [i for i in self._items if f_s(i)] 
-        return self._items
+        return self
     
     def apply(self, t_s):
         self._items = [t_s(item) for item in self._items]
