@@ -18,12 +18,17 @@ class SBI: # Sort By Id
 # ======== Стратегии фильтрации ========  #
 
 class FBQ: # Filter By Quantity
+        def __init__(self, number):
+              self.number = val_quantity(number)
         def __call__(self, product):
-            return product.quantity > 0 
+            return product.quantity > self.number
 
 class FBM: # Filter By Mark
+        def __init__(self, number):
+              if isinstance(number, float):
+                    self.number = number
         def __call__(self, product):
-            return product.mark >= 3.0
+            return product.mark >= self.number
 
 class FT: # Filter Technic
         def __call__(self, product):
