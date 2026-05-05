@@ -48,7 +48,7 @@ class FE: # Filter Technic
 
 class CS: # Change Status
         def __call__(self, product):
-            product.status = not(product.status)
+            product._status = not(product._status)
             return product
 
 class CC: # Clear Comments
