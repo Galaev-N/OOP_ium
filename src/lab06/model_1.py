@@ -1,7 +1,7 @@
 from validate import *
 class Product:
     def __init__(self, name: str, price: int, quantity: int, producer: str, cost_price: float,
-                  id: str, description: str, comments: dict, mark=3.0, status=0):
+                  id: str, description: str, comments: dict, mark=3.0, status=0) -> None:
 
         self.name = val_name(name)
         self.price = val_price(price)
@@ -16,7 +16,7 @@ class Product:
     
             #========МАГИЧЕСКИЕ МЕТОДЫ========#
 
-    def __str__(self):  # Краткая сводка 
+    def __str__(self) -> str:  # Краткая сводка 
         if self._status == 1:
             return 'На данный момент информация о товаре не доступна'
         else:
@@ -26,10 +26,10 @@ class Product:
             else:
                 return f"{self.name} за {self.price} рублей. Товара нет в наличии :("
     
-    def __repr__(self):  # Для отладки
+    def __repr__(self) -> str:  # Для отладки
         return f"product({self.name}, {self.price}, {self.quantity}, {self.producer}, {self.__cost_price__}, {self._id}, {self.description}, {self.comments}, {self.mark}, {self._status})"
 
-    def __eq__(self, another: Product): # Сравниваение с другим экземляром
+    def __eq__(self, another: Product) -> bool: # Сравниваение с другим экземляром
         if not isinstance(another, Product):
             return False
     
@@ -39,32 +39,32 @@ class Product:
             #========PROPERTY МЕТОДЫ========#
 
     @property
-    def info(self):
+    def info(self) -> str:
         if self._status == 1:
             return 'На данный момент информация о товаре не доступна'
         else:
             return f'Вот что мне удалось найти по запросу {self.name}:\n{self.name}, {self.price}, {self.quantity},\n{self.producer}, {self.description}, {self.comments}'
     
     @property
-    def mark(self):
+    def mark(self) -> float:
         return self._mark
     
     @property
-    def cost_price(self):
+    def cost_price(self) -> float:
         return self.__cost_price__
     
     @property
-    def id(self):
+    def id(self) -> str:
         return self._id
     
     @property
-    def _deficit(self):
+    def _deficit(self) -> str:
         self._status = 1
         return f'... И к последним новостям экономики, в виду всеми звестных событий начался дефицит продукта"{self.name}"'
     
     
     @mark.setter
-    def mark(self, value: float):
+    def mark(self, value: float) -> None:
         if not isinstance(value, (int, float)):
             raise TypeError(f'Оценка должна быть числом')
         if value < 0.0 or value > 5.0:
@@ -73,11 +73,11 @@ class Product:
 
             #========"БИЗНЕС" МЕТОДЫ========#
 
-    def feadback(self, txt: str):
+    def feadback(self, txt: str) -> str:
         self.comments[f'UnknowUser{len(self.comments)}'] = txt
         return 'Комментарий успешно добавлен!'
 
-    def order(self, wallet: int):
+    def order(self, wallet: int) -> str:
         if self._status == 1:
             x = 1.22
         else:
