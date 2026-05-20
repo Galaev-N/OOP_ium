@@ -1,6 +1,7 @@
-from typing import TypeVar, Generic, Iterator
+from typing import TypeVar, Generic, Iterator, Callable, Optional
 
 T = TypeVar('T')
+R = TypeVar('R')
 
 class TypedCollection(Generic[T]):
     def __init__(self) -> None:
@@ -43,9 +44,8 @@ class TypedCollection(Generic[T]):
         return self._items.pop(index)
     
     
-    def GAva(self) -> TypedCollection(Generic[T]): # Get Avalible
+    def GAva(self) -> 'TypedCollection[T]': # Get Avalible
         Available_cat = TypedCollection(Generic[T])
-    
         for item in self._items:
             # Для Food и Techic проверяем quantity
                 if hasattr(item, 'quantity') and not hasattr(item, 'free'):
@@ -62,14 +62,26 @@ class TypedCollection(Generic[T]):
     
         return Available_cat
     
-    def sort_by(self, s_s: function, reverse=False) -> TypedCollection(Generic[T]):
+    def sort_by(self, s_s: function, reverse=False) -> 'TypedCollection[T]':
         self._items.sort(key=s_s, reverse=reverse)
         return self
     
-    def filter_by(self, f_s: function) -> TypedCollection(Generic[T]):
+    def filter_by(self, f_s: Callable[[], ]) -> 'TypedCollection[T]':
         self._items = [i for i in self._items if f_s(i)] 
         return self
     
-    def apply(self, t_s: function) -> TypedCollection(Generic[T]):
+    def apply(self, t_s: function) -> 'TypedCollection[T]':
         self._items = [t_s(item) for item in self._items]
         return self
+    
+    def find(self, predicate: Callable[[T], bool]) -> Optional[T]:
+        for item in self._items:
+            if predicate(item):
+                return item
+        return None
+    
+    def filter(self, predicate: Callable[[T], bool]) -> list[T]:
+        return [item for item in self._items if predicate(item)]
+    
+    def map(self, transform: Callable[[T], R]) -> list[R]:
+        return [transform(item) for item in self._items]
