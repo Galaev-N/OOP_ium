@@ -89,3 +89,5 @@ class Product:
             return f'Отказ! Причина: недостаточно {self.price*x - wallet} на балансе'
         elif self.quantity == 0:
             return f'Отказ! Товара вида "{self.name}" нет в наличии'''
+
+    

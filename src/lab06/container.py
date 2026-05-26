@@ -1,7 +1,18 @@
-from typing import TypeVar, Generic, Iterator, Callable, Optional
+from typing import TypeVar, Generic, Iterator, Callable, Optional, Protocol
+
+class Displayable(Protocol):
+    def display(self) -> str:
+        pass
+
+class Scorable(Protocol):
+    def score(self) -> float:
+        pass
 
 T = TypeVar('T')
 R = TypeVar('R')
+D = TypeVar('D', bound=Displayable)
+S = TypeVar('S', bound=Scorable)
+
 
 class TypedCollection(Generic[T]):
     def __init__(self) -> None:
