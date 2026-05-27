@@ -1,7 +1,7 @@
 from model_1 import Product
 from new_models import Food, Technic, Estate
 from validate import *
-from exceptions import ItemNotFoundError, DuplicateItemError, InvalidInputError
+from exceptions import *
 
 
 class ConsoleUI:
@@ -315,7 +315,6 @@ class ConsoleUI:
         print(f"  - Недвижимость: {estate_count}")
     
     def run(self) -> None:
-        """Запустить главный цикл приложения."""
         print("\n Добро пожаловать в Магазин!")
         
         while True:

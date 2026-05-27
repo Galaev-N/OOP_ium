@@ -1,5 +1,3 @@
-
-
 class ItemNotFoundError(Exception):
     def __init__(self, message: str = "Объект не найден в коллекции"):
         self.message = message
