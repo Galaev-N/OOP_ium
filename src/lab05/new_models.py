@@ -132,5 +132,5 @@ class Estate(Product):
             return 'Неверный формат Местоположения'
 
 
-A = Food('a', 100, 1000, 'aaa', 10.0, '#M67890', 'sssss', {}, 29)
-print(A.info())
+'''A = Food('a', 100, 1000, 'aaa', 10.0, '#M67890', 'sssss', {}, 29)
+print(A.info())'''

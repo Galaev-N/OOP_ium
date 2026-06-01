@@ -1,0 +1,15 @@
+[
+  {
+    "__class__": "Product",
+    "name": "цв",
+    "price": 12,
+    "producer": "цу",
+    "id": "#123456",
+    "description": "ghgh",
+    "comments": {},
+    "mark": 3.0,
+    "status": 0,
+    "quantity": 12,
+    "cost_price": 1.0
+  }
+]

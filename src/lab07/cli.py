@@ -1,18 +1,29 @@
-from model_1 import Product
-from new_models import Food, Technic, Estate
-from validate import *
-from exceptions import *
+"""Консольный интерфейс для ЛР-7."""
+
+from __future__ import annotations
+
+from typing import Any
+
+try:
+    from .app import Estate, Food, Product, ShopApp, Technic
+    from .exceptions import DuplicateItemError, InvalidInputError, ItemNotFoundError, StorageError
+except ImportError:
+    from app import Estate, Food, Product, ShopApp, Technic
+    from exceptions import DuplicateItemError, InvalidInputError, ItemNotFoundError, StorageError
 
 
 class ConsoleUI:
-    
-    def __init__(self, app):
-        self.app = app
-    
+    """CLI-оболочка: отвечает только за ввод и вывод."""
+
+    def __init__(self, app: ShopApp) -> None:
+        """Создает интерфейс для объекта приложения."""
+        self.app: ShopApp = app
+
     def show_menu(self) -> None:
-        print("\n" + "=" * 60)
-        print("            МАГАЗИН - КОНСОЛЬНОЕ ПРИЛОЖЕНИЕ")
-        print("=" * 60)
+        """Показывает главное меню."""
+        print("\n" + "=" * 62)
+        print("              МАГАЗИН: ЛАБОРАТОРНАЯ 7")
+        print("=" * 62)
         print("1. Добавить товар")
         print("2. Показать все товары")
         print("3. Найти товар по ID")
@@ -23,305 +34,265 @@ class ConsoleUI:
         print("8. Применить трансформацию")
         print("9. Статистика")
         print("0. Выход и сохранение")
-        print("-" * 60)
-    
-    def get_choice(self) -> str:
-        while True:
-            try:
-                choice = input("Выберите пункт: ").strip()
-                return choice
-            except Exception as e:
-                print(f"Ошибка: {e}")
-    
+        print("-" * 62)
+
+    def read_str(self, prompt: str) -> str:
+        """Считывает непустую строку."""
+        value = input(prompt).strip()
+        if not value:
+            raise InvalidInputError("Поле не может быть пустым")
+        return value
+
+    def read_int(self, prompt: str) -> int:
+        """Считывает целое число."""
+        try:
+            return int(input(prompt).strip())
+        except ValueError as exc:
+            raise InvalidInputError("Нужно ввести целое число") from exc
+
+    def read_float(self, prompt: str) -> float:
+        """Считывает число с плавающей точкой."""
+        try:
+            return float(input(prompt).strip())
+        except ValueError as exc:
+            raise InvalidInputError("Нужно ввести число") from exc
+
+    def read_yes_no(self, prompt: str) -> bool:
+        """Считывает подтверждение действия."""
+        return input(prompt).strip().lower() in {"y", "yes", "д", "да", "1"}
+
     def add_item_flow(self) -> None:
+        """Добавляет товар выбранного типа."""
         print("\n--- ДОБАВЛЕНИЕ ТОВАРА ---")
-        print("Выберите тип товара:")
-        print("1. Обычный товар (Product)")
-        print("2. Продукт питания (Food)")
-        print("3. Техника (Technic)")
-        print("4. Недвижимость (Estate)")
-        
-        while True:
-            try:
-                type_choice = input("Ваш выбор (1-4): ").strip()
-                
-                if type_choice == "1":
-                    item = self._create_product()
-                elif type_choice == "2":
-                    item = self._create_food()
-                elif type_choice == "3":
-                    item = self._create_technic()
-                elif type_choice == "4":
-                    item = self._create_estate()
-                else:
-                    print("Неверный выбор. Попробуйте снова.")
-                    continue
-                
-                result = self.app.add_item(item)
-                print(f"\n {result}")
-                break
-                
-            except (TypeError, ValueError) as e:
-                print(f"\n Ошибка валидации: {e}")
-            except DuplicateItemError as e:
-                print(f"\n {e}")
-            except Exception as e:
-                print(f"\n Неожиданная ошибка: {e}")
-    
-    def _create_product(self) -> Product:
-        print("\n--- Введите данные товара ---")
-        name = input("Название: ").strip()
-        price = int(input("Цена: "))
-        quantity = int(input("Количество: "))
-        producer = input("Производитель: ").strip()
-        cost_price = float(input("Себестоимость: "))
-        id_str = input("ID (формат #XXXXXX): ").strip()
-        description = input("Описание: ").strip()
-        
-        return Product(
-            name=name, price=price, quantity=quantity,
-            producer=producer, cost_price=cost_price,
-            id=id_str, description=description, comments={}
-        )
-    
-    def _create_food(self) -> Food:
-        print("\n--- Введите данные продукта питания ---")
-        name = input("Название: ").strip()
-        price = int(input("Цена: "))
-        quantity = int(input("Количество: "))
-        producer = input("Производитель: ").strip()
-        cost_price = float(input("Себестоимость: "))
-        id_str = input("ID (формат #XXXXXX): ").strip()
-        description = input("Описание: ").strip()
-        calories = int(input("Калории: "))
-        expiration_days = int(input("Срок годности (дней): "))
-        
-        return Food(
-            name=name, price=price, quantity=quantity,
-            producer=producer, cost_price=cost_price,
-            id=id_str, description=description, comments={},
-            calories=calories, expiration_period=expiration_days
-        )
-    
-    def _create_technic(self) -> Technic:
-        print("\n--- Введите данные техники ---")
-        name = input("Название: ").strip()
-        price = int(input("Цена: "))
-        quantity = int(input("Количество: "))
-        producer = input("Производитель: ").strip()
-        cost_price = float(input("Себестоимость: "))
-        id_str = input("ID (формат #XXXXXX): ").strip()
-        description = input("Описание: ").strip()
-        warranty_months = int(input("Гарантия (месяцев): "))
-        power = float(input("Мощность (кВт): "))
-        
-        return Technic(
-            name=name, price=price, quantity=quantity,
-            producer=producer, cost_price=cost_price,
-            id=id_str, description=description, comments={},
-            warranty_months=warranty_months, power=power
-        )
-    
-    def _create_estate(self) -> Estate:
-        print("\n--- Введите данные недвижимости ---")
-        name = input("Название: ").strip()
-        price = int(input("Цена: "))
-        quantity = int(input("Количество: "))
-        producer = input("Владелец: ").strip()
-        cost_price = float(input("Себестоимость: "))
-        id_str = input("ID (формат #XXXXXX): ").strip()
-        description = input("Описание: ").strip()
-        location_lat = float(input("Широта: "))
-        location_lon = float(input("Долгота: "))
-        area = int(input("Площадь (м²): "))
-        free = input("Свободно? (1-да/0-нет): ") in ['1', 'да', 'true', 'yes']
-        
-        return Estate(
-            name=name, price=price, quantity=quantity,
-            producer=producer, cost_price=cost_price,
-            id=id_str, description=description, comments={},
-            location=(location_lat, location_lon), area=area, free=free
-        )
-    
-    def show_all_items(self) -> None:
-        items = self.app.get_all_items()
-        
-        if not items:
-            print("\n Коллекция пуста!")
-            return
-        
-        print(f"\n ВСЕ ТОВАРЫ (всего: {len(items)})")
-        print("=" * 60)
-        
-        for i, item in enumerate(items, 1):
-            print(f"\n[{i}] {item}")
-            print("-" * 40)
-    
-    def find_item_flow(self) -> None:
-        print("\n--- ПОИСК ТОВАРА ---")
-        item_id = input("Введите ID товара (например #123456): ").strip()
-        
-        item = self.app.find_by_id(item_id)
-        
-        if item:
-            print("\n РЕЗУЛЬТАТ ПОИСКА:")
-            print("=" * 40)
-            print(item)
-        else:
-            print(f"\n Товар с ID '{item_id}' не найден")
-    
-    def remove_item_flow(self) -> None:
-        print("\n--- УДАЛЕНИЕ ТОВАРА ---")
-        
-        items = self.app.get_all_items()
-        if not items:
-            print("Коллекция пуста!")
-            return
-        
-        print("Доступные товары:")
-        for i, item in enumerate(items):
-            print(f"  {i}. {item.name} (ID: {item._id if hasattr(item, '_id') else item.id})")
-        
+        print("1. Обычный товар")
+        print("2. Продукт питания")
+        print("3. Техника")
+        print("4. Недвижимость")
+        print("0. Назад")
+
         try:
-            choice = input("\nУдалить по (1-индекс / 2-ID): ").strip()
-            
+            choice = input("Выберите тип: ").strip()
+            if choice == "0":
+                return
             if choice == "1":
-                index = int(input("Введите индекс: "))
-                print(f"\n Вы уверены?")
-                confirm = input(f"Удалить товар с индексом {index}? (y/n): ").strip().lower()
-                if confirm == 'y':
-                    result = self.app.remove_item_at_index(index)
-                    print(f"\n {result}")
-                else:
-                    print("Удаление отменено")
-            
+                item = self._create_product()
             elif choice == "2":
-                item_id = input("Введите ID: ").strip()
-                confirm = input(f"Удалить товар с ID '{item_id}'? (y/n): ").strip().lower()
-                if confirm == 'y':
-                    result = self.app.remove_item(item_id)
-                    print(f"\n {result}")
+                item = self._create_food()
+            elif choice == "3":
+                item = self._create_technic()
+            elif choice == "4":
+                item = self._create_estate()
+            else:
+                raise InvalidInputError("Неверный тип товара")
+            print(self.app.add_item(item))
+        except (InvalidInputError, ValueError, TypeError, DuplicateItemError) as exc:
+            print(f"Ошибка: {exc}")
+
+    def _read_common_fields(self) -> dict[str, Any]:
+        """Считывает общие поля для Product, Food и Technic."""
+        return {
+            "name": self.read_str("Название: "),
+            "price": self.read_int("Цена: "),
+            "quantity": self.read_int("Количество: "),
+            "producer": self.read_str("Производитель: "),
+            "cost_price": self.read_float("Себестоимость: "),
+            "id": self.read_str("ID (формат #XXXXXX): "),
+            "description": self.read_str("Описание: "),
+            "comments": {},
+            "mark": self.read_float("Оценка (0-5): "),
+        }
+
+    def _create_product(self) -> Product:
+        """Создает обычный товар."""
+        print("\n--- Данные обычного товара ---")
+        return Product(**self._read_common_fields())
+
+    def _create_food(self) -> Food:
+        """Создает продукт питания. Исправлено: используется expiration_per."""
+        print("\n--- Данные продукта питания ---")
+        data = self._read_common_fields()
+        calories = self.read_int("Калории: ")
+        expiration_days = self.read_int("Срок годности (дней): ")
+        return Food(**data, expiration_per=expiration_days, calories=calories)
+
+    def _create_technic(self) -> Technic:
+        """Создает объект техники."""
+        print("\n--- Данные техники ---")
+        data = self._read_common_fields()
+        warranty_months = self.read_int("Гарантия (месяцев): ")
+        power_consumption = self.read_float("Потребление энергии: ")
+        return Technic(**data, warranty_months=warranty_months, power_consumption=power_consumption)
+
+    def _create_estate(self) -> Estate:
+        """Создает объект недвижимости."""
+        print("\n--- Данные недвижимости ---")
+        return Estate(
+            name=self.read_str("Название: "),
+            price=self.read_int("Цена: "),
+            producer=self.read_str("Владелец/застройщик: "),
+            id=self.read_str("ID (формат #XXXXXX): "),
+            description=self.read_str("Описание: "),
+            comments={},
+            location=(self.read_float("Широта: "), self.read_float("Долгота: ")),
+            proportions=self.read_int("Площадь: "),
+            free=1 if self.read_yes_no("Свободно? (y/n): ") else 0,
+            mark=self.read_float("Оценка (0-5): "),
+        )
+
+    def show_all_items(self) -> None:
+        """Показывает все товары."""
+        self._print_items(self.app.get_all_items(), "ВСЕ ТОВАРЫ")
+
+    def find_item_flow(self) -> None:
+        """Ищет товар по ID."""
+        try:
+            item_id = self.read_str("\nВведите ID: ")
+            item = self.app.find_by_id(item_id)
+            if item is None:
+                print(f"Товар с ID '{item_id}' не найден")
+                return
+            self._print_items([item], "РЕЗУЛЬТАТ ПОИСКА")
+        except InvalidInputError as exc:
+            print(f"Ошибка: {exc}")
+
+    def remove_item_flow(self) -> None:
+        """Удаляет товар с подтверждением."""
+        items = self.app.get_all_items()
+        if not items:
+            print("Коллекция пуста")
+            return
+
+        self._print_items(items, "ДОСТУПНЫЕ ТОВАРЫ")
+        print("1. Удалить по индексу")
+        print("2. Удалить по ID")
+        print("0. Назад")
+
+        try:
+            choice = input("Выберите способ: ").strip()
+            if choice == "0":
+                return
+            if choice == "1":
+                index = self.read_int("Номер в таблице: ") - 1
+                item = items[index]
+                if self.read_yes_no(f"Удалить '{self.app.get_item_name(item)}'? (y/n): "):
+                    print(self.app.remove_item_at_index(index))
                 else:
                     print("Удаление отменено")
-            
+            elif choice == "2":
+                item_id = self.read_str("ID: ")
+                item = self.app.find_by_id(item_id)
+                if item is None:
+                    raise ItemNotFoundError(f"Товар с ID '{item_id}' не найден")
+                if self.read_yes_no(f"Удалить '{self.app.get_item_name(item)}'? (y/n): "):
+                    print(self.app.remove_item(item_id))
+                else:
+                    print("Удаление отменено")
             else:
-                print("Неверный выбор")
-                
-        except ValueError as e:
-            print(f"Ошибка: {e}")
-        except ItemNotFoundError as e:
-            print(f"✗ {e}")
-    
+                raise InvalidInputError("Неверный пункт")
+        except (IndexError, InvalidInputError, ItemNotFoundError) as exc:
+            print(f"Ошибка: {exc}")
+
     def sort_items_flow(self) -> None:
-        if not self.app.get_all_items():
-            print("\nКоллекция пуста!")
-            return
-        
-        print("\n--- СОРТИРОВКА ТОВАРОВ ---")
+        """Сортирует товары по выбранной стратегии."""
         strategies = self.app.get_sort_strategies()
-        
+        print("\n--- СОРТИРОВКА ---")
         for key, (name, _) in strategies.items():
             print(f"{key}. {name}")
-        
-        try:
-            choice = input("Выберите критерий сортировки: ").strip()
-            reverse = input("По убыванию? (y/n): ").strip().lower() == 'y'
-            
-            if choice in strategies:
-                _, key_func = strategies[choice]
-                sorted_items = self.app.sort_items(key_func, reverse)
-                
-                print("\n ОТСОРТИРОВАННЫЕ ТОВАРЫ:")
-                print("=" * 50)
-                for i, item in enumerate(sorted_items, 1):
-                    print(f"{i}. {item.name} - {item.price} руб.")
-            else:
-                print("Неверный выбор")
-                
-        except Exception as e:
-            print(f"Ошибка: {e}")
-    
+        print("0. Назад")
+
+        choice = input("Выберите стратегию: ").strip()
+        if choice == "0":
+            return
+        if choice not in strategies:
+            print("Неверный пункт")
+            return
+        reverse = self.read_yes_no("По убыванию? (y/n): ")
+        _, key_func = strategies[choice]
+        self._print_items(self.app.sort_items(key_func, reverse), "РЕЗУЛЬТАТ СОРТИРОВКИ")
+
     def filter_items_flow(self) -> None:
-        if not self.app.get_all_items():
-            print("\nКоллекция пуста!")
-            return
-        
-        print("\n--- ФИЛЬТРАЦИЯ ТОВАРОВ ---")
+        """Фильтрует товары по выбранной стратегии."""
         strategies = self.app.get_filter_strategies()
-        
+        print("\n--- ФИЛЬТРАЦИЯ ---")
         for key, (name, _) in strategies.items():
             print(f"{key}. {name}")
-        
-        try:
-            choice = input("Выберите фильтр: ").strip()
-            
-            if choice in strategies:
-                _, filter_func = strategies[choice]
-                filtered = self.app.filter_items(filter_func)
-                
-                print(f"\n РЕЗУЛЬТАТЫ ФИЛЬТРАЦИИ (найдено: {len(filtered)})")
-                print("=" * 50)
-                for i, item in enumerate(filtered, 1):
-                    print(f"{i}. {item.name} - {item.price} руб.")
-                    if hasattr(item, 'quantity'):
-                        print(f"   В наличии: {item.quantity}")
-                    print()
-            else:
-                print("Неверный выбор")
-                
-        except Exception as e:
-            print(f"Ошибка: {e}")
-    
+        print("0. Назад")
+
+        choice = input("Выберите фильтр: ").strip()
+        if choice == "0":
+            return
+        if choice not in strategies:
+            print("Неверный пункт")
+            return
+        _, predicate = strategies[choice]
+        self._print_items(self.app.filter_items(predicate), "РЕЗУЛЬТАТ ФИЛЬТРАЦИИ")
+
     def show_available_items(self) -> None:
-        items = self.app.get_available_items()
-        
-        if not items:
-            print("\n Нет товаров в наличии!")
+        """Показывает доступные товары."""
+        self._print_items(self.app.get_available_items(), "ДОСТУПНЫЕ ТОВАРЫ")
+
+    def transform_flow(self) -> None:
+        """Применяет трансформацию к коллекции."""
+        print("\n--- ТРАНСФОРМАЦИИ ---")
+        print("1. Инвертировать статус всех товаров")
+        print("2. Очистить комментарии")
+        print("0. Назад")
+        choice = input("Выберите: ").strip()
+        if choice == "1":
+            self.app.invert_status()
+            print("Статусы изменены")
+        elif choice == "2":
+            if self.read_yes_no("Очистить комментарии у всех товаров? (y/n): "):
+                self.app.clear_comments()
+                print("Комментарии очищены")
+            else:
+                print("Операция отменена")
+        elif choice == "0":
             return
-        
-        print(f"\n ТОВАРЫ В НАЛИЧИИ (всего: {len(items)})")
-        print("=" * 50)
-        for i, item in enumerate(items, 1):
-            print(f"{i}. {item.name} - {item.price} руб.")
-            if hasattr(item, 'quantity'):
-                print(f"   Осталось: {item.quantity}")
-            print()
-    
+        else:
+            print("Неверный пункт")
+
     def show_statistics(self) -> None:
-        items = self.app.get_all_items()
-        
+        """Показывает статистику магазина."""
+        stats = self.app.get_statistics()
+        print("\n--- СТАТИСТИКА ---")
+        print(f"Всего товаров: {stats['total']}")
+        print(f"Общая стоимость: {stats['total_price']} руб.")
+        print(f"Средняя цена: {stats['average_price']:.2f} руб.")
+        print(f"Обычные товары: {stats['product']}")
+        print(f"Продукты питания: {stats['food']}")
+        print(f"Техника: {stats['technic']}")
+        print(f"Недвижимость: {stats['estate']}")
+
+    def _print_items(self, items: list[Any], title: str) -> None:
+        """Печатает товары в виде простой таблицы."""
+        print(f"\n{title}")
+        print("-" * 96)
+        print(f"{'№':<4}{'Тип':<14}{'ID':<10}{'Название':<28}{'Цена':<12}{'Кол-во/статус':<16}{'Оценка':<8}")
+        print("-" * 96)
         if not items:
-            print("\nНет данных для статистики")
-            return
-        
-        total_items = len(items)
-        total_value = sum(item.price for item in items)
-        avg_price = total_value / total_items if total_items > 0 else 0
-        
-        food_count = sum(1 for item in items if isinstance(item, Food))
-        technic_count = sum(1 for item in items if isinstance(item, Technic))
-        estate_count = sum(1 for item in items if isinstance(item, Estate))
-        product_count = total_items - food_count - technic_count - estate_count
-        
-        print("\n СТАТИСТИКА МАГАЗИНА")
-        print("=" * 40)
-        print(f"Всего товаров: {total_items}")
-        print(f"Общая стоимость: {total_value} руб.")
-        print(f"Средняя цена: {avg_price:.2f} руб.")
-        print(f"\nПо категориям:")
-        print(f"  - Обычные товары: {product_count}")
-        print(f"  - Продукты питания: {food_count}")
-        print(f"  - Техника: {technic_count}")
-        print(f"  - Недвижимость: {estate_count}")
-    
+            print("Нет данных")
+        for number, item in enumerate(items, 1):
+            item_type = type(item).__name__
+            item_id = self.app.get_item_id(item)
+            name = self.app.get_item_name(item)[:27]
+            price = self.app.get_item_price(item)
+            if hasattr(item, "free"):
+                amount = "свободно" if getattr(item, "free") else "занято"
+            else:
+                amount = str(self.app.get_item_quantity(item))
+            mark = self.app.get_item_mark(item)
+            print(f"{number:<4}{item_type:<14}{item_id:<10}{name:<28}{price:<12}{amount:<16}{mark:<8.1f}")
+        print("-" * 96)
+
     def run(self) -> None:
-        print("\n Добро пожаловать в Магазин!")
-        
+        """Запускает основной цикл приложения."""
+        print("\nЗапуск консольного приложения магазина")
         while True:
             try:
                 self.show_menu()
-                choice = self.get_choice()
-                
+                choice = input("Выберите пункт: ").strip()
+
                 if choice == "1":
                     self.add_item_flow()
                 elif choice == "2":
@@ -337,28 +308,22 @@ class ConsoleUI:
                 elif choice == "7":
                     self.show_available_items()
                 elif choice == "8":
-                    print("\nДоступные трансформации:")
-                    print("1. Инвертировать статус всех товаров")
-                    print("2. Очистить комментарии")
-                    trans_choice = input("Выберите: ")
-                    # Здесь можно добавить трансформации
-                    print("Функция в разработке")
+                    self.transform_flow()
                 elif choice == "9":
                     self.show_statistics()
                 elif choice == "0":
-                    print("\n Сохранение данных...")
                     self.app.save_data()
-                    print("До свидания!")
+                    print("Данные сохранены. Выход.")
                     break
                 else:
-                    print("\n Неверный пункт меню. Попробуйте снова.")
-                
+                    print("Неверный пункт меню")
+
                 input("\nНажмите Enter для продолжения...")
-                
             except KeyboardInterrupt:
-                print("\n\n Принудительное завершение...")
+                print("\nПринудительное завершение. Сохраняю данные...")
                 self.app.save_data()
                 break
-            except Exception as e:
-                print(f"\n Непредвиденная ошибка: {e}")
-                input("\nНажмите Enter для продолжения...")
+            except StorageError as exc:
+                print(f"Ошибка файла: {exc}")
+            except Exception as exc:
+                print(f"Непредвиденная ошибка: {exc}")

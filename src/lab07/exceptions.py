@@ -1,23 +1,21 @@
+"""Собственные исключения для ЛР-7."""
+
+
 class ItemNotFoundError(Exception):
-    def __init__(self, message: str = "Объект не найден в коллекции"):
-        self.message = message
-        super().__init__(self.message)
+    """Объект не найден в коллекции."""
 
 
 class DuplicateItemError(Exception):
-    def __init__(self, item_id: str = ""):
-        self.item_id = item_id
-        message = f"Объект с идентификатором '{item_id}' уже существует"
-        super().__init__(message)
+    """Объект с таким идентификатором уже существует."""
+
+    def __init__(self, item_id: str) -> None:
+        """Создает ошибку дубликата по ID."""
+        super().__init__(f"Объект с ID '{item_id}' уже существует")
 
 
 class InvalidInputError(Exception):
-    def __init__(self, message: str = "Некорректный ввод"):
-        self.message = message
-        super().__init__(self.message)
+    """Некорректный пользовательский ввод."""
 
 
 class StorageError(Exception):
-    def __init__(self, message: str = "Ошибка при работе с файлом"):
-        self.message = message
-        super().__init__(self.message)
+    """Ошибка сохранения или загрузки данных."""
