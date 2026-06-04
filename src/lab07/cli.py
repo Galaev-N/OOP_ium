@@ -56,7 +56,7 @@ class ConsoleUI:
             return float(input(prompt).strip())
         except ValueError as exc:
             raise InvalidInputError("Нужно ввести число") from exc
-
+    
     def read_yes_no(self, prompt: str) -> bool:
         """Считывает подтверждение действия."""
         return input(prompt).strip().lower() in {"y", "yes", "д", "да", "1"}
